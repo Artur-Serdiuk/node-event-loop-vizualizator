@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import "../test-setup";
+import "../../test-setup";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   render,
@@ -9,7 +9,7 @@ import {
   act,
 } from "@testing-library/react";
 import { EventLoopVisualizer } from "./EventLoopVisualizer";
-import { codeExamples } from "../data/examples";
+import { codeExamples } from "../../data/examples";
 
 afterEach(() => cleanup());
 

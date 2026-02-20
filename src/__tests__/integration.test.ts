@@ -5,7 +5,7 @@ import {
   createInitialState,
   eventLoopReducer,
   type ReducerState,
-} from "../reducers/eventLoopReducer";
+} from "../store/reducers/eventLoopReducer";
 
 /**
  * Integration tests: parse real JS code, load into reducer,

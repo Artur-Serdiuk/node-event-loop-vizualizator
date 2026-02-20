@@ -4,7 +4,7 @@ import {
   eventLoopReducer,
   type ReducerState,
 } from "./eventLoopReducer";
-import type { Task, ConsoleOutput, CodeStatement } from "../types/eventLoop";
+import type { Task, ConsoleOutput, CodeStatement } from "../../types/eventLoop";
 
 // ── Helpers ──────────────────────────────────────────────────────────────
 

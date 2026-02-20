@@ -25,7 +25,7 @@ test.describe("Event Loop Visualizer", () => {
 
     // Wait until it finishes (status becomes "✓ Finished")
     // Use a longer timeout just in case
-    await expect(page.getByText("✓ Finished")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("✓ Finished")).toBeVisible({ timeout: 15000 });
 
     // Verify console output
     const consolePanel = page

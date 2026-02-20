@@ -1,4 +1,4 @@
-import type { EventLoopPhase, PhaseQueues, Task } from "../types/eventLoop";
+import type { EventLoopPhase, PhaseQueues, Task } from "../../types/eventLoop";
 import styles from "./QueueDisplay.module.css";
 
 interface QueueDisplayProps {

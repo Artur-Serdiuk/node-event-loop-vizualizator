@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { ConsoleOutput } from "../types/eventLoop";
+import type { ConsoleOutput } from "../../types/eventLoop";
 import styles from "./ConsolePanel.module.css";
 
 interface ConsolePanelProps {

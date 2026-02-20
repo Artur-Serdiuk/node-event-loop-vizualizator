@@ -1,12 +1,12 @@
-import { useEventLoop } from "../hooks/useEventLoop";
-import type { CodeStatement } from "../types/eventLoop";
+import { useEventLoop } from "../../hooks/useEventLoop";
+import type { CodeStatement } from "../../types/eventLoop";
 import { QueueDisplay } from "./QueueDisplay";
 import { MicrotaskDisplay } from "./MicrotaskDisplay";
-import { ControlPanel } from "./ControlPanel";
-import { CodeEditor } from "./CodeEditor";
+import { ControlPanel } from "../controls/ControlPanel";
+import { CodeEditor } from "../code-editor/CodeEditor";
 import { CallStack } from "./CallStack";
 import { EventLoopPhases } from "./EventLoopPhases";
-import { ConsolePanel } from "./ConsolePanel";
+import { ConsolePanel } from "../controls/ConsolePanel";
 import { ExecutionLog } from "./ExecutionLog";
 import styles from "./EventLoopVisualizer.module.css";
 

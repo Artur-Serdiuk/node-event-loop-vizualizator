@@ -6,8 +6,8 @@ import type {
   ExecutionHistoryItem,
   ConsoleOutput,
   PlaybackSpeed,
-} from "../types/eventLoop";
-import { PHASE_ORDER } from "../core/eventLoopSimulator";
+} from "../../types/eventLoop";
+import { PHASE_ORDER } from "../../core/eventLoopSimulator";
 
 // ── Reducer state ──────────────────────────────────────────────────────
 
@@ -350,7 +350,28 @@ function step(prev: EventLoopState): EventLoopState {
   // 1) Reading code line-by-line
   if (!prev.codeFullyRead) return stepCode(prev);
 
-  const tick = prev.tick + 1;
+  let tick = prev.tick + 1;
+
+  // FAST-FORWARD LOGIC:
+  // If we have future timers but no other work, fast forward the tick
+  // to avoid doing hundreds of empty steps.
+  if (prev.currentPhase === "poll" || prev.currentPhase === "timers") {
+    const futureTimers = prev.phaseQueues.timers.filter(
+      (t) => t.executeAtTick !== undefined && t.executeAtTick > tick,
+    );
+    const hasOtherWork =
+      hasMicrotasks(prev) ||
+      prev.phaseQueues.pending.length > 0 ||
+      prev.phaseQueues.idle.length > 0 ||
+      prev.phaseQueues.poll.length > 0 ||
+      prev.phaseQueues.check.length > 0 ||
+      prev.phaseQueues.close.length > 0;
+
+    if (!hasOtherWork && futureTimers.length > 0) {
+      const minTick = Math.min(...futureTimers.map((t) => t.executeAtTick!));
+      tick = Math.max(tick, minTick);
+    }
+  }
 
   // 2) If stopped, check for remaining work or finish
   if (prev.currentPhase === "stopped") {

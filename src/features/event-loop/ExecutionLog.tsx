@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import type { ExecutionHistoryItem } from "../types/eventLoop";
+import type { ExecutionHistoryItem } from "../../types/eventLoop";
 import styles from "./ExecutionLog.module.css";
 
 interface ExecutionLogProps {

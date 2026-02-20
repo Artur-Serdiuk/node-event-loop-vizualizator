@@ -1,4 +1,4 @@
-import { EventLoopVisualizer } from "./components/EventLoopVisualizer";
+import { EventLoopVisualizer } from "./features/event-loop/EventLoopVisualizer";
 import "./App.css";
 
 function App() {

@@ -1,9 +1,9 @@
-import type { EventLoopState, EventLoopPhase } from "../types/eventLoop";
+import type { EventLoopState, EventLoopPhase } from "../../types/eventLoop";
 import {
   PHASE_ORDER,
   PHASE_LABELS,
   PHASE_APIS,
-} from "../core/eventLoopSimulator";
+} from "../../core/eventLoopSimulator";
 import styles from "./EventLoopPhases.module.css";
 
 interface EventLoopPhasesProps {

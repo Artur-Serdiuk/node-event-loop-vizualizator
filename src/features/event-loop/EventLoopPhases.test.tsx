@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
-import "../test-setup";
+import "../../test-setup";
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { EventLoopPhases } from "./EventLoopPhases";
-import { createInitialState } from "../reducers/eventLoopReducer";
+import { createInitialState } from "../../store/reducers/eventLoopReducer";
 
 afterEach(() => cleanup());
 

@@ -1,4 +1,4 @@
-import type { MicrotaskQueue, Task } from "../types/eventLoop";
+import type { MicrotaskQueue, Task } from "../../types/eventLoop";
 import styles from "./MicrotaskDisplay.module.css";
 
 interface MicrotaskDisplayProps {

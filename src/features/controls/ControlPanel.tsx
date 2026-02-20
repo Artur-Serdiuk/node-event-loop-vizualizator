@@ -1,4 +1,4 @@
-import type { PlaybackSpeed } from "../types/eventLoop";
+import type { PlaybackSpeed } from "../../types/eventLoop";
 import styles from "./ControlPanel.module.css";
 
 interface ControlPanelProps {

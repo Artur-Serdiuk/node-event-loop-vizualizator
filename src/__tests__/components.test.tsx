@@ -2,12 +2,12 @@
 import "../test-setup";
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import { CallStack } from "./CallStack";
-import { ConsolePanel } from "./ConsolePanel";
-import { ControlPanel } from "./ControlPanel";
-import { ExecutionLog } from "./ExecutionLog";
-import { QueueDisplay } from "./QueueDisplay";
-import { MicrotaskDisplay } from "./MicrotaskDisplay";
+import { CallStack } from "../features/event-loop/CallStack";
+import { ConsolePanel } from "../features/controls/ConsolePanel";
+import { ControlPanel } from "../features/controls/ControlPanel";
+import { ExecutionLog } from "../features/event-loop/ExecutionLog";
+import { QueueDisplay } from "../features/event-loop/QueueDisplay";
+import { MicrotaskDisplay } from "../features/event-loop/MicrotaskDisplay";
 import type {
   ConsoleOutput,
   ExecutionHistoryItem,

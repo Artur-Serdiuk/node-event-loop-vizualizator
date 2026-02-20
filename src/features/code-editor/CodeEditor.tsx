@@ -3,9 +3,9 @@ import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css";
-import { parseCodeToStatements } from "../utils/codeParser";
-import type { CodeStatement } from "../types/eventLoop";
-import { codeExamples, getExampleById } from "../data/examples";
+import { parseCodeToStatements } from "../../utils/codeParser";
+import type { CodeStatement } from "../../types/eventLoop";
+import { codeExamples, getExampleById } from "../../data/examples";
 import styles from "./CodeEditor.module.css";
 
 interface CodeEditorProps {

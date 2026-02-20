@@ -3,7 +3,7 @@ import type { PlaybackSpeed, CodeStatement } from "../types/eventLoop";
 import {
   createInitialState,
   eventLoopReducer,
-} from "../reducers/eventLoopReducer";
+} from "../store/reducers/eventLoopReducer";
 
 export const useEventLoop = () => {
   const [state, dispatch] = useReducer(

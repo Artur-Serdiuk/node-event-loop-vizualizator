@@ -8,8 +8,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:5173",
-    trace: "on-first-retry",
+    baseURL: "http://localhost:5173/node-event-loop-vizualizator/",
+    trace: "on",
+    screenshot: "on",
   },
   projects: [
     {
