@@ -1,0 +1,149 @@
+.container {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.queueSection {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.queueSection:last-child {
+  border-bottom: none;
+}
+
+.queueHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.queueTitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.queueCount {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task {
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  animation: slideIn 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.activePhase {
+  animation: glow 1.5s ease infinite;
+}
+
+.timersTask {
+  background: rgba(248, 113, 113, 0.1);
+  border-left-color: var(--phase-timers);
+  color: #fca5a5;
+}
+
+.pendingTask {
+  background: rgba(251, 146, 60, 0.1);
+  border-left-color: var(--phase-pending);
+  color: #fdba74;
+}
+
+.idleTask {
+  background: rgba(107, 114, 128, 0.1);
+  border-left-color: var(--phase-idle);
+  color: #9ca3af;
+}
+
+.pollTask {
+  background: rgba(34, 211, 238, 0.1);
+  border-left-color: var(--phase-poll);
+  color: #67e8f9;
+}
+
+.checkTask {
+  background: rgba(52, 211, 153, 0.1);
+  border-left-color: var(--phase-check);
+  color: #6ee7b7;
+}
+
+.closeTask {
+  background: rgba(167, 139, 250, 0.1);
+  border-left-color: var(--phase-close);
+  color: #c4b5fd;
+}
+
+.taskHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.taskType {
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.taskDelay {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.taskCallback {
+  margin-top: 2px;
+  opacity: 0.8;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.emptyQueue {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 4px 0;
+  font-style: italic;
+}

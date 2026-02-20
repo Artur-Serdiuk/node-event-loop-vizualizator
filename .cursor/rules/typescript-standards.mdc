@@ -1,0 +1,27 @@
+---
+description: TypeScript standards for the project
+globs: "**/*.ts,**/*.tsx"
+alwaysApply: false
+---
+
+# TypeScript
+
+## Typing
+
+- Explicit types for component props and hook return values
+- Types for Event Loop state: `Phase`, `Task`, `PhaseState` — in separate `types/` or next to logic
+
+## Examples
+
+```ts
+// ✅ Types for Event Loop domain
+type Phase = "timers" | "pending" | "poll" | "check" | "close";
+interface Task {
+  id: string;
+  source: "setTimeout" | "setImmediate" | "nextTick" | "promise" | "io";
+  label?: string;
+}
+```
+
+- Avoid `any` — use `unknown` and type guards when needed
+- Strict mode: `strict: true` in tsconfig

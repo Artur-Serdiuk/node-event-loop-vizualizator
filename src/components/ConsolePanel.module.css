@@ -1,0 +1,119 @@
+.container {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.count {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.output {
+  padding: 8px 12px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  animation: fadeIn 0.2s ease;
+}
+
+.line:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.lineNumber {
+  font-size: 10px;
+  color: var(--text-muted);
+  min-width: 18px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.linePhase {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.phaseSync {
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+}
+
+.phaseMicrotask {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fcd34d;
+}
+
+.phaseTimers {
+  background: rgba(248, 113, 113, 0.15);
+  color: #fca5a5;
+}
+
+.phaseCheck {
+  background: rgba(52, 211, 153, 0.15);
+  color: #6ee7b7;
+}
+
+.phasePoll {
+  background: rgba(34, 211, 238, 0.15);
+  color: #67e8f9;
+}
+
+.phaseClose {
+  background: rgba(167, 139, 250, 0.15);
+  color: #c4b5fd;
+}
+
+.lineText {
+  color: var(--text-primary);
+}
+
+.emptyOutput {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
