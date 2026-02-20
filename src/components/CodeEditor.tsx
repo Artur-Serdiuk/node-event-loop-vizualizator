@@ -1,25 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css";
-import { parseCode } from "../utils/codeParser";
-import type { Task, ConsoleOutput } from "../types/eventLoop";
+import { parseCodeToStatements } from "../utils/codeParser";
+import type { CodeStatement } from "../types/eventLoop";
 import { codeExamples, getExampleById } from "../data/examples";
 import styles from "./CodeEditor.module.css";
 
 interface CodeEditorProps {
-  onRunCode: (tasks: Task[], syncOutputs: ConsoleOutput[]) => void;
+  onLoadCode: (statements: CodeStatement[], code: string) => void;
+  onReset: () => void;
+  highlightLines: { start: number; end: number } | null;
+  codeFullyRead: boolean;
+  isCodeLoaded: boolean;
+  sourceCode: string;
 }
 
-export const CodeEditor = ({ onRunCode }: CodeEditorProps) => {
+export const CodeEditor = ({
+  onLoadCode,
+  onReset,
+  highlightLines,
+  codeFullyRead,
+  isCodeLoaded,
+  sourceCode,
+}: CodeEditorProps) => {
   const [code, setCode] = useState("");
   const [selectedExample, setSelectedExample] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (code.trim()) {
-      const result = parseCode(code);
+      const result = parseCodeToStatements(code);
       setError(result.errors.length > 0 ? result.errors[0] : null);
     } else {
       setError(null);
@@ -27,26 +39,84 @@ export const CodeEditor = ({ onRunCode }: CodeEditorProps) => {
   }, [code]);
 
   const handleRunCode = () => {
-    const result = parseCode(code);
+    if (isReadingMode) {
+      onReset();
+    }
+    const result = parseCodeToStatements(code);
     if (result.errors.length > 0) {
       setError(result.errors[0]);
       return;
     }
     setError(null);
-    onRunCode(result.tasks, result.syncOutputs);
+    onLoadCode(result.statements, code);
   };
 
   const handleExampleChange = (exampleId: string) => {
     setSelectedExample(exampleId);
     if (exampleId) {
       const example = getExampleById(exampleId);
-      if (example) setCode(example.code);
+      if (example) {
+        if (isReadingMode) {
+          onReset();
+        }
+        setCode(example.code);
+      }
     }
   };
 
   const currentExample = selectedExample
     ? getExampleById(selectedExample)
     : null;
+
+  // When code is loaded (reading mode), render a read-only view with line highlighting
+  const isReadingMode = isCodeLoaded;
+  const displayCode = isReadingMode ? sourceCode : code;
+
+  const codeLines = useMemo(() => {
+    return displayCode.split("\n");
+  }, [displayCode]);
+
+  const renderReadonlyCode = () => {
+    return (
+      <div className={styles.readonlyCode}>
+        {codeLines.map((line, idx) => {
+          const lineNum = idx + 1;
+          const isHighlighted =
+            highlightLines !== null &&
+            lineNum >= highlightLines.start &&
+            lineNum <= highlightLines.end;
+          const isAlreadyRead =
+            highlightLines !== null && lineNum < highlightLines.start;
+          const isFullyRead = codeFullyRead;
+
+          return (
+            <div
+              key={idx}
+              className={`${styles.codeLine} ${
+                isHighlighted
+                  ? styles.codeLineHighlighted
+                  : isAlreadyRead || isFullyRead
+                    ? styles.codeLineRead
+                    : styles.codeLinePending
+              }`}
+            >
+              <span className={styles.lineNumber}>{lineNum}</span>
+              <span
+                className={styles.lineContent}
+                dangerouslySetInnerHTML={{
+                  __html: highlight(
+                    line || " ",
+                    languages.javascript,
+                    "javascript",
+                  ),
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -69,24 +139,28 @@ export const CodeEditor = ({ onRunCode }: CodeEditorProps) => {
         </div>
       </div>
 
-      {currentExample && (
+      {currentExample && !isReadingMode && (
         <div className={styles.description}>{currentExample.description}</div>
       )}
 
       <div className={styles.editorWrapper}>
-        <Editor
-          value={code}
-          onValueChange={setCode}
-          highlight={(c) => highlight(c, languages.javascript, "javascript")}
-          padding={16}
-          className={styles.editor}
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: 13,
-            backgroundColor: "#0d0d1e",
-            color: "#d4d4d4",
-          }}
-        />
+        {isReadingMode ? (
+          renderReadonlyCode()
+        ) : (
+          <Editor
+            value={code}
+            onValueChange={setCode}
+            highlight={(c) => highlight(c, languages.javascript, "javascript")}
+            padding={16}
+            className={styles.editor}
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 13,
+              backgroundColor: "#0d0d1e",
+              color: "#d4d4d4",
+            }}
+          />
+        )}
       </div>
 
       {error && <div className={styles.error}>⚠ {error}</div>}

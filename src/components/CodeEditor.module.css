@@ -127,3 +127,58 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* Reading mode styles */
+
+.readonlyCode {
+  padding: 8px 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  background: #0d0d1e;
+  min-height: 80px;
+}
+
+.codeLine {
+  display: flex;
+  align-items: baseline;
+  padding: 0 12px;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  border-left: 3px solid transparent;
+}
+
+.codeLineHighlighted {
+  background: rgba(99, 102, 241, 0.18);
+  border-left-color: var(--accent-blue);
+}
+
+.codeLineHighlighted .lineContent {
+  color: #fff;
+}
+
+.codeLineRead {
+  opacity: 0.55;
+}
+
+.codeLinePending {
+  opacity: 0.4;
+}
+
+.lineNumber {
+  display: inline-block;
+  min-width: 32px;
+  padding-right: 12px;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.2);
+  user-select: none;
+  font-size: 11px;
+}
+
+.codeLineHighlighted .lineNumber {
+  color: var(--accent-blue);
+}
+
+.lineContent {
+  white-space: pre;
+  color: #d4d4d4;
+}

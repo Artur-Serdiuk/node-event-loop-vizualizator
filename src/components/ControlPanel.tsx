@@ -6,6 +6,8 @@ interface ControlPanelProps {
   isPaused: boolean;
   finished: boolean;
   speed: PlaybackSpeed;
+  codeFullyRead: boolean;
+  isCodeLoaded: boolean;
   onPlay: () => void;
   onPause: () => void;
   onStep: () => void;
@@ -20,19 +22,25 @@ export const ControlPanel = ({
   isPaused,
   finished,
   speed,
+  codeFullyRead,
+  isCodeLoaded,
   onPlay,
   onPause,
   onStep,
   onReset,
   onSpeedChange,
 }: ControlPanelProps) => {
+  const isReadingCode = isCodeLoaded && !codeFullyRead;
+
   const statusText = finished
     ? "✓ Finished"
-    : isRunning && !isPaused
-      ? "● Running"
-      : isPaused
-        ? "⏸ Paused"
-        : "○ Ready";
+    : isReadingCode
+      ? "📖 Reading Code"
+      : isRunning && !isPaused
+        ? "● Running"
+        : isPaused
+          ? "⏸ Paused"
+          : "○ Ready";
 
   const statusClass = finished
     ? styles.statusFinished

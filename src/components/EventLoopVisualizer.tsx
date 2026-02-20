@@ -1,5 +1,5 @@
 import { useEventLoop } from "../hooks/useEventLoop";
-import type { Task, ConsoleOutput } from "../types/eventLoop";
+import type { CodeStatement } from "../types/eventLoop";
 import { QueueDisplay } from "./QueueDisplay";
 import { MicrotaskDisplay } from "./MicrotaskDisplay";
 import { ControlPanel } from "./ControlPanel";
@@ -11,13 +11,14 @@ import { ExecutionLog } from "./ExecutionLog";
 import styles from "./EventLoopVisualizer.module.css";
 
 export const EventLoopVisualizer = () => {
-  const { state, loadTasks, step, play, pause, reset, setSpeed, speed } =
+  const { state, loadCode, step, play, pause, reset, setSpeed, speed } =
     useEventLoop();
 
-  const handleRunCode = (tasks: Task[], syncOutputs: ConsoleOutput[]) => {
-    reset();
-    setTimeout(() => loadTasks(tasks, syncOutputs), 0);
+  const handleLoadCode = (statements: CodeStatement[], code: string) => {
+    loadCode(statements, code);
   };
+
+  const isCodeLoaded = state.codeStatements.length > 0;
 
   return (
     <div className={styles.container}>
@@ -33,6 +34,8 @@ export const EventLoopVisualizer = () => {
           isPaused={state.isPaused}
           finished={state.finished}
           speed={speed}
+          codeFullyRead={state.codeFullyRead}
+          isCodeLoaded={isCodeLoaded}
           onPlay={play}
           onPause={pause}
           onStep={step}
@@ -42,7 +45,14 @@ export const EventLoopVisualizer = () => {
       </div>
 
       <div className={styles.code}>
-        <CodeEditor onRunCode={handleRunCode} />
+        <CodeEditor
+          onLoadCode={handleLoadCode}
+          onReset={reset}
+          highlightLines={state.highlightLines}
+          codeFullyRead={state.codeFullyRead}
+          isCodeLoaded={isCodeLoaded}
+          sourceCode={state.sourceCode}
+        />
       </div>
 
       <div className={styles.phases}>

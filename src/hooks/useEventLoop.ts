@@ -1,5 +1,5 @@
 import { useReducer, useCallback, useRef, useEffect } from "react";
-import type { Task, ConsoleOutput, PlaybackSpeed } from "../types/eventLoop";
+import type { PlaybackSpeed, CodeStatement } from "../types/eventLoop";
 import {
   createInitialState,
   eventLoopReducer,
@@ -13,12 +13,9 @@ export const useEventLoop = () => {
   );
   const intervalRef = useRef<number | null>(null);
 
-  const loadTasks = useCallback(
-    (tasks: Task[], syncOutputs: ConsoleOutput[]) => {
-      dispatch({ type: "LOAD_TASKS", payload: { tasks, syncOutputs } });
-    },
-    [],
-  );
+  const loadCode = useCallback((statements: CodeStatement[], code: string) => {
+    dispatch({ type: "RESET_AND_LOAD_CODE", payload: { statements, code } });
+  }, []);
 
   const step = useCallback(() => {
     dispatch({ type: "STEP" });
@@ -44,11 +41,12 @@ export const useEventLoop = () => {
     dispatch({ type: "SET_SPEED", payload: speed });
   }, []);
 
+  const { isRunning, isPaused, finished } = state.eventLoop;
+
   // Auto-play interval
   useEffect(() => {
-    const { eventLoop, speed } = state;
-    if (eventLoop.isRunning && !eventLoop.isPaused && !eventLoop.finished) {
-      const ms = Math.max(200, 1000 / speed);
+    if (isRunning && !isPaused && !finished) {
+      const ms = Math.max(200, 1000 / state.speed);
       const interval = window.setInterval(() => {
         dispatch({ type: "STEP" });
       }, ms);
@@ -61,16 +59,11 @@ export const useEventLoop = () => {
         intervalRef.current = null;
       }
     };
-  }, [
-    state.eventLoop.isRunning,
-    state.eventLoop.isPaused,
-    state.eventLoop.finished,
-    state.speed,
-  ]);
+  }, [isRunning, isPaused, finished, state.speed]);
 
   return {
     state: state.eventLoop,
-    loadTasks,
+    loadCode,
     step,
     play,
     pause,

@@ -1,5 +1,9 @@
 import type { EventLoopState, EventLoopPhase } from "../types/eventLoop";
-import { PHASE_LABELS, PHASE_APIS } from "../core/eventLoopSimulator";
+import {
+  PHASE_ORDER,
+  PHASE_LABELS,
+  PHASE_APIS,
+} from "../core/eventLoopSimulator";
 import styles from "./EventLoopPhases.module.css";
 
 interface EventLoopPhasesProps {
@@ -14,15 +18,6 @@ const PHASE_CSS: Record<EventLoopPhase, string> = {
   check: styles.check,
   close: styles.close,
 };
-
-const PHASES: EventLoopPhase[] = [
-  "timers",
-  "pending",
-  "idle",
-  "poll",
-  "check",
-  "close",
-];
 
 /** Build a curved arc path between two angles on a circle */
 function arcArrow(
@@ -45,7 +40,7 @@ function arcArrow(
 
 export const EventLoopPhases = ({ state }: EventLoopPhasesProps) => {
   const isMicrotask = state.currentPhase === "microtask";
-  const phaseCount = PHASES.length;
+  const phaseCount = PHASE_ORDER.length;
   const svgSize = 300;
   const svgCenter = svgSize / 2;
   const arcRadius = 115;
@@ -137,7 +132,7 @@ export const EventLoopPhases = ({ state }: EventLoopPhasesProps) => {
               <polygon points="0 0, 8 3, 0 6" fill="rgba(148,163,184,0.5)" />
             </marker>
           </defs>
-          {PHASES.map((_, i) => {
+          {PHASE_ORDER.map((_, i) => {
             const startAngle = (i * 360) / phaseCount - 90;
             const endAngle = ((i + 1) * 360) / phaseCount - 90;
             const d = arcArrow(
@@ -161,7 +156,7 @@ export const EventLoopPhases = ({ state }: EventLoopPhasesProps) => {
         </svg>
 
         {/* Phase nodes */}
-        {PHASES.map((phase, i) => {
+        {PHASE_ORDER.map((phase, i) => {
           const isActive = state.currentPhase === phase;
           const angle = (i * 360) / phaseCount - 90;
           const rad = angle * (Math.PI / 180);

@@ -119,6 +119,8 @@
   font-size: 11px;
   color: var(--text-muted);
   margin-left: auto;
+  min-width: 120px;
+  text-align: right;
 }
 
 .statusDot {

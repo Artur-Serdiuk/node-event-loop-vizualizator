@@ -17,6 +17,14 @@ export type TaskType =
   | "close"
   | "sync";
 
+export interface CodeStatement {
+  startLine: number;
+  endLine: number;
+  source: string;
+  task?: Task;
+  syncOutput?: ConsoleOutput;
+}
+
 export interface Task {
   id: string;
   type: TaskType;
@@ -76,6 +84,12 @@ export interface EventLoopState {
   tick: number;
   pollWaiting: boolean;
   finished: boolean;
+  // code-reading state
+  codeStatements: CodeStatement[];
+  codeReadIndex: number; // -1 = not started, 0..n = current index
+  codeFullyRead: boolean;
+  highlightLines: { start: number; end: number } | null;
+  sourceCode: string;
 }
 
 export type PlaybackSpeed = 0.5 | 1 | 1.5 | 2;
@@ -85,8 +99,17 @@ export type EventLoopAction =
       type: "LOAD_TASKS";
       payload: { tasks: Task[]; syncOutputs: ConsoleOutput[] };
     }
+  | {
+      type: "LOAD_CODE";
+      payload: { statements: CodeStatement[]; code: string };
+    }
   | { type: "STEP" }
+  | { type: "STEP_CODE" }
   | { type: "PLAY" }
   | { type: "PAUSE" }
   | { type: "RESET" }
+  | {
+      type: "RESET_AND_LOAD_CODE";
+      payload: { statements: CodeStatement[]; code: string };
+    }
   | { type: "SET_SPEED"; payload: PlaybackSpeed };
