@@ -42,17 +42,6 @@ function makeStatement(overrides: Partial<CodeStatement> = {}): CodeStatement {
   };
 }
 
-/** Dispatch a sequence of actions and return the final state */
-function dispatchAll(
-  initial: ReducerState,
-  ...actions: Parameters<typeof eventLoopReducer>[1][]
-): ReducerState {
-  return actions.reduce(
-    (state, action) => eventLoopReducer(state, action),
-    initial,
-  );
-}
-
 // ── Tests ────────────────────────────────────────────────────────────────
 
 describe("eventLoopReducer", () => {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs";
 import "prismjs/components/prism-javascript";
@@ -27,28 +27,26 @@ export const CodeEditor = ({
 }: CodeEditorProps) => {
   const [code, setCode] = useState("");
   const [selectedExample, setSelectedExample] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (code.trim()) {
-      const result = parseCodeToStatements(code);
-      setError(result.errors.length > 0 ? result.errors[0] : null);
-    } else {
-      setError(null);
-    }
+  const parsedCode = useMemo(() => {
+    if (!code.trim()) return { statements: [], error: null };
+    const result = parseCodeToStatements(code);
+    return {
+      statements: result.statements,
+      error: result.errors.length > 0 ? result.errors[0] : null,
+    };
   }, [code]);
+
+  const error = parsedCode.error;
 
   const handleRunCode = () => {
     if (isReadingMode) {
       onReset();
     }
-    const result = parseCodeToStatements(code);
-    if (result.errors.length > 0) {
-      setError(result.errors[0]);
+    if (error) {
       return;
     }
-    setError(null);
-    onLoadCode(result.statements, code);
+    onLoadCode(parsedCode.statements, code);
   };
 
   const handleExampleChange = (exampleId: string) => {
