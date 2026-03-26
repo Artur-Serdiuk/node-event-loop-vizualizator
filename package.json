@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:integration": "vitest run src/__tests__/integration.test.ts"
   },
   "dependencies": {
     "acorn": "^8.15.0",

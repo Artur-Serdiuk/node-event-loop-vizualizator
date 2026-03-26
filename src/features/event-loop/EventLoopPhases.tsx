@@ -1,23 +1,12 @@
-import type { EventLoopState, EventLoopPhase } from "../../types/eventLoop";
-import {
-  PHASE_ORDER,
-  PHASE_LABELS,
-  PHASE_APIS,
-} from "../../core/eventLoopSimulator";
+import type { EventLoopState } from "../../types/eventLoop";
+import { PHASE_ORDER } from "../../core/eventLoopSimulator";
+import { EventLoopIcon } from "./EventLoopIcon";
+import { PhaseNode } from "./PhaseNode";
 import styles from "./EventLoopPhases.module.css";
 
 interface EventLoopPhasesProps {
   state: EventLoopState;
 }
-
-const PHASE_CSS: Record<EventLoopPhase, string> = {
-  timers: styles.timers,
-  pending: styles.pending,
-  idle: styles.idle,
-  poll: styles.poll,
-  check: styles.check,
-  close: styles.close,
-};
 
 /** Build a curved arc path between two angles on a circle */
 function arcArrow(
@@ -27,7 +16,6 @@ function arcArrow(
   startDeg: number,
   endDeg: number,
 ) {
-  // Inset the arc a bit so it doesn't touch the phase nodes
   const inset = 12;
   const s = (startDeg + inset) * (Math.PI / 180);
   const e = (endDeg - inset) * (Math.PI / 180);
@@ -56,65 +44,7 @@ export const EventLoopPhases = ({ state }: EventLoopPhasesProps) => {
       <div className={styles.ring}>
         {/* Center label */}
         <div className={styles.centerLabel}>
-          <svg
-            className={styles.centerIcon}
-            viewBox="0 0 48 48"
-            width="40"
-            height="40"
-          >
-            <defs>
-              {/* Animated glow filter for arrow 1 (red) */}
-              <filter id="glowRed" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="1.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              <filter
-                id="glowYellow"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="1.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-            {/* Top arrow (red) — curves right-to-left */}
-            <path
-              d="M 34 18 A 13 13 0 0 0 14 18"
-              fill="none"
-              stroke="#f87171"
-              strokeWidth="3"
-              strokeLinecap="round"
-              className={styles.arrow1}
-            />
-            <polygon
-              points="12,12 17,21 7,21"
-              fill="#f87171"
-              className={styles.arrow1}
-            />
-
-            {/* Bottom arrow (yellow) — curves left-to-right */}
-            <path
-              d="M 14 30 A 13 13 0 0 0 34 30"
-              fill="none"
-              stroke="#fbbf24"
-              strokeWidth="3"
-              strokeLinecap="round"
-              className={styles.arrow2}
-            />
-            <polygon
-              points="36,36 31,27 41,27"
-              fill="#fbbf24"
-              className={styles.arrow2}
-            />
-          </svg>
+          <EventLoopIcon />
           <div className={styles.centerText}>Event Loop</div>
         </div>
 
@@ -157,7 +87,6 @@ export const EventLoopPhases = ({ state }: EventLoopPhasesProps) => {
 
         {/* Phase nodes */}
         {PHASE_ORDER.map((phase, i) => {
-          const isActive = state.currentPhase === phase;
           const angle = (i * 360) / phaseCount - 90;
           const rad = angle * (Math.PI / 180);
           const radius = 38;
@@ -165,17 +94,13 @@ export const EventLoopPhases = ({ state }: EventLoopPhasesProps) => {
           const y = 50 + radius * Math.sin(rad);
 
           return (
-            <div
+            <PhaseNode
               key={phase}
-              className={`${styles.phase} ${PHASE_CSS[phase]} ${isActive ? styles.active : ""}`}
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-              }}
-            >
-              <div className={styles.phaseLabel}>{PHASE_LABELS[phase]}</div>
-              <div className={styles.phaseApi}>{PHASE_APIS[phase][0]}</div>
-            </div>
+              phase={phase}
+              isActive={state.currentPhase === phase}
+              x={x}
+              y={y}
+            />
           );
         })}
       </div>

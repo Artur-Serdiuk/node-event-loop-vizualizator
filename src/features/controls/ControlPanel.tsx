@@ -32,23 +32,18 @@ export const ControlPanel = ({
 }: ControlPanelProps) => {
   const isReadingCode = isCodeLoaded && !codeFullyRead;
 
-  const statusText = finished
-    ? "✓ Finished"
-    : isReadingCode
-      ? "📖 Reading Code"
-      : isRunning && !isPaused
-        ? "● Running"
-        : isPaused
-          ? "⏸ Paused"
-          : "○ Ready";
+  const getStatus = () => {
+    if (finished)
+      return { text: "✓ Finished", className: styles.statusFinished };
+    if (isReadingCode)
+      return { text: "📖 Reading Code", className: styles.statusIdle };
+    if (isRunning && !isPaused)
+      return { text: "● Running", className: styles.statusRunning };
+    if (isPaused) return { text: "⏸ Paused", className: styles.statusPaused };
+    return { text: "○ Ready", className: styles.statusIdle };
+  };
 
-  const statusClass = finished
-    ? styles.statusFinished
-    : isRunning && !isPaused
-      ? styles.statusRunning
-      : isPaused
-        ? styles.statusPaused
-        : styles.statusIdle;
+  const status = getStatus();
 
   return (
     <div className={styles.container}>
@@ -102,8 +97,8 @@ export const ControlPanel = ({
       </div>
 
       <div className={styles.status}>
-        <span className={`${styles.statusDot} ${statusClass}`} />
-        {statusText}
+        <span className={`${styles.statusDot} ${status.className}`} />
+        {status.text}
       </div>
     </div>
   );

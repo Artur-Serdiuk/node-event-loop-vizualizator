@@ -1,5 +1,4 @@
 import { useEventLoop } from "../../hooks/useEventLoop";
-import type { CodeStatement } from "../../types/eventLoop";
 import { QueueDisplay } from "./QueueDisplay";
 import { MicrotaskDisplay } from "./MicrotaskDisplay";
 import { ControlPanel } from "../controls/ControlPanel";
@@ -13,10 +12,6 @@ import styles from "./EventLoopVisualizer.module.css";
 export const EventLoopVisualizer = () => {
   const { state, loadCode, step, play, pause, reset, setSpeed, speed } =
     useEventLoop();
-
-  const handleLoadCode = (statements: CodeStatement[], code: string) => {
-    loadCode(statements, code);
-  };
 
   const isCodeLoaded = state.codeStatements.length > 0;
 
@@ -46,7 +41,7 @@ export const EventLoopVisualizer = () => {
 
       <div className={styles.code}>
         <CodeEditor
-          onLoadCode={handleLoadCode}
+          onLoadCode={loadCode}
           onReset={reset}
           highlightLines={state.highlightLines}
           codeFullyRead={state.codeFullyRead}
